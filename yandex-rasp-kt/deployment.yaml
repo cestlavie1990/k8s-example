@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yandex-rasp-kt
+  namespace: dev
+  labels:
+    app: yandex-rasp-kt
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: yandexrasp
+  template:
+    metadata:
+      labels:
+        app: yandexrasp
+    spec:
+      containers:
+        - name: yandexrasp
+          imagePullPolicy: IfNotPresent
+          image: docker.io/library/yandex-rasp-kt
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres
+            - name: DB_URL
+              value: localhost:5432
