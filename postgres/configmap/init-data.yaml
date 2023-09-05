@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-data-configmap
+  namespace: dev
+data:
+  init.sql: |
+    CREATE DATABASE yandex_rasp_db;
+    
+    \c yandex_rasp_db;
+    
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

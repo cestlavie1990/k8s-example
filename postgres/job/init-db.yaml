@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-init-job
+  namespace: dev
+spec:
+  template:
+    metadata:
+      name: postgres-init-job
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15.4
+          command: [ "psql" ]
+          args: [ "-U", "postgres", "-f", "/volume/init.sql" ]
+          volumeMounts:
+            - name: init-data-volume
+              mountPath: /volume/init.sql
+              subPath: init.sql
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: PGDATA
+              value: /data/postgres
+      restartPolicy: Never
+      volumes:
+        - name: init-data-volume
+          configMap:
+            name: init-data-configmap
+            items:
+              - key: init.sql
+                path: init.sql
+  backoffLimit: 3

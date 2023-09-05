@@ -19,11 +19,6 @@ spec:
       labels:
         app: yandexrasp
     spec:
-      volumes:
-        - name: init-data
-          hostPath:
-            path: /volume/init_db.sql
-            type: File
       containers:
         - name: yandexrasp
           imagePullPolicy: IfNotPresent
@@ -37,7 +32,3 @@ spec:
               value: postgres
             - name: DB_URL
               value: postgres-service.dev:15432
-          volumeMounts:
-            - name: init-data
-              mountPath: /volume/init_db.sql
-              subPath: init_db.sql
